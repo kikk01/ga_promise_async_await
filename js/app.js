@@ -16,35 +16,32 @@ var get = function (url) {
     })
 }
 
-var getPosts = function() {
-    return get('https://jsonplaceholder.typicode.com/users').then(function (response) {
+var getPosts = async function() {
+    try {
+        var response = await get('https://jsonplaceholder.typicode.com/ufsers')
         var users = JSON.parse(response)
-        return get('https://jsonplaceholder.typicode.com/comments?userId=' + users[0].id)
-    }).then(function (response) {
+        response = await get('https://jsonplaceholder.typicode.com/comments?userId=' + users[0].id)
         var posts = JSON.parse(response)
-        return posts
-    })
+        return posts        
+    } catch (e) {
+        console.log('il y a eu un problème', e);
+    }
+
 }
 
-getPosts().then(function (posts) {
-    console.log('Le premier article ', posts[0])
-}).catch(function(error) {
-    console.log(error);
-}).then(function() {
-    console.log('Fin des requetes AJAX');
-})
+var getFirstPost = async function() {
+    try {
+        var posts = await getPosts()
+        return posts[0]        
+    } catch (e) {
+        console.log('il y a eu un problème', e);
+    }
+   
+}
 
-/**
- * Promesses
- * let p = new Promise(function (resolve, reject) {
- * ...
- * ...
- * resolve(...)
- * })
- * 
- * p.then(function (response) {....})
- * .then(function () {})
- * .then(function () {})
- * .catch(function (error) {...} )
- * 
- */
+var demo = async function () {
+    var arr = await Promise.all([getPosts(), getFirstPost()])
+    console.log(arr);
+}
+
+demo()
