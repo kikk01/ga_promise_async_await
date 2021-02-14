@@ -18,7 +18,7 @@ var get = function (url) {
 
 var getPosts = async function() {
     try {
-        var response = await get('https://jsonplaceholder.typicode.com/ufsers')
+        var response = await get('https://jsonplaceholder.typicode.com/users')
         var users = JSON.parse(response)
         response = await get('https://jsonplaceholder.typicode.com/comments?userId=' + users[0].id)
         var posts = JSON.parse(response)
